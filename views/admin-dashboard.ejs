@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Admin Dashboard</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+    }
+
+    /* Add a menu bar style */
+    .menu-bar {
+      display: flex;
+      justify-content: flex-end;
+      margin-bottom: 20px;
+    }
+
+    /* Style for menu buttons */
+    .menu-button {
+      margin-left: 10px;
+      padding: 8px 12px;
+      font-size: 14px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    h1 {
+      text-align: center;
+    }
+
+    h2 {
+      margin-top: 30px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 20px;
+    }
+
+    th, td {
+      padding: 8px;
+      text-align: left;
+      border-bottom: 1px solid #ccc;
+    }
+
+    .member-details {
+      margin-bottom: 50px;
+      border: 1px solid #ccc;
+      padding: 20px;
+    }
+
+    .member-details.hidden {
+      display: none;
+    }
+
+    .show-more-button {
+      cursor: pointer;
+      color: blue;
+      text-decoration: underline;
+    }
+
+    .remove-button {
+      background-color: red;
+      color: white;
+      border: none;
+      padding: 5px 10px;
+      cursor: pointer;
+      border-radius: 4px;
+    }
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    .page-title {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    .form-group label {
+      display: block;
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+
+    .form-group select,
+    .form-group button {
+      padding: 8px 12px;
+      font-size: 14px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+
+    .form-group select {
+      width: 100%;
+      max-width: 300px;
+    }
+
+    .form-group button {
+      background-color: #4CAF50;
+      color: white;
+      cursor: pointer;
+    }
+    .menu-bar {
+      display: flex;
+      justify-content: flex-end;
+      margin-bottom: 20px;
+      margin-top: 10px; /* Add top margin */
+    }
+
+    .menu-button {
+      margin-left: 10px;
+      padding: 8px 12px;
+      font-size: 14px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      background-color: transparent; /* Make the buttons transparent */
+    }
+
+    .menu-button:hover {
+      background-color: #f0f0f0; /* Add background color on hover */
+    }
+    .assign-trainer-form {
+    margin-top: 30px;
+    padding: 20px;
+    border: 1px solid #ccc;
+  }
+
+  /* Style for form labels */
+  .form-group label {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 10px;
+  }
+
+  /* Style for form select elements */
+  .form-group select {
+    width: 100%;
+    max-width: 300px;
+    padding: 8px 12px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+
+  /* Style for form buttons */
+  .form-group button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 8px 12px;
+    font-size: 14px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+
+  /* Style for the "Extend Expiry Date" form */
+  .extend-expiry-form {
+    margin-top: 30px;
+    padding: 20px;
+    border: 1px solid #ccc;
+  }
+
+  /* Style for form buttons in the "Extend Expiry Date" and "Assign trainer" form */
+  .extend-expiry-form button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 8px 12px;
+    font-size: 14px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  .assign-trainer-form button{
+    background-color: #4CAF50;
+    color: white;
+    padding: 8px 12px;
+    font-size: 14px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  </style>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+  <script>
+    function toggleDetails(index, type) {
+      const detailsClass = type === 'member' ? 'member-details' : 'trainer-details';
+      const memberDetails = document.getElementsByClassName(detailsClass);
+      memberDetails[index].classList.toggle('hidden');
+    }
+    
+  </script>
+</head>
+<body>
+  <!-- Add a menu bar -->
+  <div class="menu-bar">
+    <button class="menu-button" onclick="location.href='/logout'" type="button">Logout</button>
+    <button class="menu-button" onclick="location.href='signup.html'" type="button">New SignUp</button>
+    <button class="menu-button" onclick="location.href='/exportmembers'" type="button">Export Members</button>
+    <button class="menu-button" onclick="location.href='/exporttrainers'" type="button">Export Trainers</button>
+  </div>
+
+  <div class="container">
+    <h1 class="page-title">Welcome</h1>
+
+    <h2>Members</h2>
+    <table>
+      <tr>
+        <th>Name</th>
+        <th>Height</th>
+        <th>Weight</th>
+        <th>Plan Status</th>
+        <th>Enrolled</th>
+        <th>Expiry</th>
+        <th>Trainer</th>
+        <th>Actions</th>
+      </tr>
+      <% for (let i = 0; i < Math.min(members.length, 5); i++) { %>
+        <form action="/deletemember/<%= members[i]._id %>?_method=DELETE" method="post">
+        <tr>
+          <td><%= members[i].name %></td>
+          <td><%= members[i].height %> cm</td>
+          <td><%= members[i].weight %> kg</td>
+          <td><%= members[i].planStatus %></td>
+          <td><%= members[i].enrolled %></td>
+          <td><%= members[i].expiry %></td>
+
+          <td>
+            <% if (members[i].trainer) {
+              const trainerId = members[i].trainer.toString();
+              const trainer = trainers.find(trainer => String(trainer._id) === trainerId);
+              if (trainer) { %>
+                <%= trainer.name %>
+              <% } else { %>
+                Not found
+              <% }
+            } else { %>
+              Not assigned
+            <% } %>
+            
+          </td>
+          <td>
+            <button class="remove-button" type="submit">Remove</button>
+          </td>
+        </tr>
+      </form>
+      <% } %>
+    </table>
+    <form action="/extendexpiry" method="post" class="extend-expiry-form">
+        <h3>Extend Expiry Date</h3>
+        <label for="memberId">Member:</label>
+        <select name="memberId" id="memberId">
+          <% members.forEach((member) => { %>
+            <option value="<%= member._id %>"><%= member.name %></option>
+          <% }); %>
+        </select>
+        <label for="extensionOption">Extension Option:</label>
+        <select name="option" id="extensionOption">
+          <option value="monthly">Extend Monthly</option>
+          <option value="yearly">Extend Yearly</option>
+        </select>
+        <button type="submit">Extend</button>
+      </form>
+
+    <h2>Trainers</h2>
+    <table>
+      <tr>
+        <th>Name</th>
+        <th>Phone</th>
+        <th>Age</th>
+        <th>Address</th>
+        <th>Actions</th>
+      </tr>
+      <% for (let i = 0; i < Math.min(trainers.length, 5); i++) { %>
+        <form action="/deletetrainer/<%= trainers[i]._id %>?_method=DELETE" method="post">
+        <tr>
+          <td><%= trainers[i].name %></td>
+          <td><%= trainers[i].phone %></td>
+          <td><%= trainers[i].age %></td>
+          <td><%= trainers[i].address %></td>
+          <td>
+            <button class="remove-button" type="submit">Remove</button>
+          </td>
+        </tr>
+        </form>
+      <% } %>
+    </table>
+
+    <% if (members.length > 5) { %>
+      <div id="showMoreButton" class="show-more-button" onclick="toggleDetails(5, 'member')">Show More</div>
+    <% } %>
+
+    <% for (let i = 5; i < members.length; i++) { %>
+      <div class="member-details hidden">
+        <h3>Member Details - <%= i + 1 %></h3>
+        <table>
+          <tr>
+            <th>Name</th>
+            <th>Height</th>
+            <th>Weight</th>
+            <th>Plan Status</th>
+            <th>Expiry</th>
+            <th>Actions</th>
+          </tr>
+          <tr>
+            <td><%= members[i].name %></td>
+            <td><%= members[i].height %> cm</td>
+            <td><%= members[i].weight %> kg</td>
+            <td><%= members[i].planStatus %></td>
+          </tr>
+        </table>
+      </div>
+    <% } %>
+
+    <% if (trainers.length > 5) { %>
+      <div id="showMoreButton" class="show-more-button" onclick="toggleDetails(5, 'trainer')">Show More</div>
+    <% } %>
+  
+    <% for (let i = 5; i < trainers.length; i++) { %>
+      <div class="trainer-details hidden">
+        <h3>Trainer Details - <%= i + 1 %></h3>
+        <table>
+          <tr>
+            <th>Name</th>
+            <th>Phone</th>
+            <th>Age</th>
+            <th>Address</th>
+            <th>Actions</th>
+          </tr>
+          <tr>
+            <td><%= trainers[i].name %></td>
+            <td><%= trainers[i].phone %></td>
+            <td><%= trainers[i].age %></td>
+            <td><%= trainers[i].address %></td>
+            <td><button class="remove-button" type="submit">Remove</button></td>
+          </tr>
+        </table>
+      </div>
+    <% } %>
+    <!-- Inside admin-dashboard.ejs -->
+    <form action="/admin/assign-trainer" method="POST" class="assign-trainer-form">
+      <h3>Assign Trainer to Member</h3>
+      <label for="memberId">Member:</label>
+      <select name="memberId" id="memberId">
+        <% members.forEach((member) => { %>
+          <option value="<%= member._id %>"><%= member.name %></option>
+        <% }); %>
+      </select>
+      <label for="trainerId">Trainer:</label>
+      <select name="trainerId" id="trainerId">
+        <% trainers.forEach((trainer) => { %>
+          <option value="<%= trainer._id %>"><%= trainer.name %></option>
+        <% }); %>
+      </select>
+      <button type="submit">Assign</button>
+    </form>
+  </div>
+</body>
+</html>

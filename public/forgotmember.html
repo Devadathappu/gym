@@ -1,0 +1,125 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Forgot Password</title>
+    <style>
+        body {
+            background-image: url('https://images.unsplash.com/photo-1580086319619-3ed498161c77?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTh8fGd5bXxlbnwwfHwwfHx8MA%3D%3D&w=1000&q=80');
+            background-size: cover;
+            background-position: center;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        .login-form {
+            background-color: rgba(255, 255, 255, 0.3);
+            padding: 20px;
+            border-radius: 20px;
+            margin-left: 300px;
+            margin-right: 300px;
+            width: 25%;
+        }
+
+        .login-form h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .login-form input[type="text"],
+        .login-form input[type="password"] {
+            width: 96%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        .login-form button {
+            width: 100%;
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .login-form button:hover {
+            background-color: #45a049;
+        }
+
+        /* Additional styling for the forgot password form */
+        .forgot-password-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .forgot-password-form {
+            background-color: rgba(255, 255, 255, 0.3);
+            padding: 20px;
+            border-radius: 20px;
+            width: 25%;
+        }
+
+        .forgot-password-form h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .forgot-password-form input[type="text"],
+        .forgot-password-form input[type="password"] {
+            width: 96%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        .forgot-password-form button {
+            width: 100%;
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .forgot-password-form button:hover {
+            background-color: #45a049;
+        }
+    </style>
+    <script>
+        function showChangePasswordForm() {
+            var loginForm = document.getElementById("login-form");
+            var changePasswordForm = document.getElementById("change-password-form");
+
+            loginForm.style.display = "none";
+            changePasswordForm.style.display = "block";
+        }
+    </script>
+</head>
+<body>
+    <div class="forgot-password-container">
+        <form id="change-password-form" class="forgot-password-form"  method="post" action="/member/change-password">
+            <h2>Change Password</h2>
+            <input type="text" name="email" id="email" placeholder="Email" required>
+            <input type="password" name="newPassword" id="newPassword" placeholder="New Password" required>
+            <button type="submit" onclick="showChangePasswordForm()">Change Password</button>
+        </form>
+    </div>
+</body>
+</html>

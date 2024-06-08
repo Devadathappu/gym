@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Trainer Login</title>
+    <style>
+        body {
+            background-image: url(/img/trainer.jpg);
+            background-size: cover;
+            background-position: center;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+
+        .container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        .login-form {
+            background-color: rgba(255, 255, 255, 0.3);
+            padding: 20px;
+            border-radius: 20px;
+            margin-left: 300px;
+            margin-right: 300px;
+            width: 25%;
+        }
+
+        .login-form h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .login-form input[type="text"],
+        .login-form input[type="password"] {
+            width: 96%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        .forgot-password {
+            text-align: right;
+          
+            color: #000000
+            ;
+        }
+        .forgot-password a{
+            color: #050404;
+            font-size:smaller;
+        }
+
+        .password-container {
+            position: relative;
+        }
+
+        .password-toggle {
+            position: absolute;
+            top: 50%;
+            right: 10px;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: #999;
+        }
+
+        .password-toggle:hover {
+            color: #333;
+        }
+
+        .login-form button {
+            width: 100%;
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .login-form .new-user {
+            text-align: center;
+           
+        }
+
+        .login-form .new-user a {
+            color: #333;
+            text-decoration: none;
+        }
+
+        .login-form button:hover {
+            background-color: #45a049;
+        }
+        .login-form .options-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2%;
+            width: 100%;
+            margin-top: 2px;
+        }
+
+        .login-form .options-container a {
+            color: #333;
+            text-decoration: none;
+            font-size: 14px;
+        }
+        .container h2{
+            font-family:'Oswald', sans-serif;;
+            color: rgb(0, 0, 0);
+            font-weight: bolder;
+        }
+    </style>
+    <script>
+        function togglePassword() {
+            var passwordInput = document.getElementById("password");
+            var toggleIcon = document.getElementById("toggle-icon");
+
+            if (passwordInput.type === "password") {
+                passwordInput.type = "text";
+                toggleIcon.classList.remove("fa-eye");
+                toggleIcon.classList.add("fa-eye-slash");
+            } else {
+                passwordInput.type = "password";
+                toggleIcon.classList.remove("fa-eye-slash");
+                toggleIcon.classList.add("fa-eye");
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <form class="login-form" method="post" action="/trainer">
+            <h2>TRAINER LOGIN</h2>
+            <input type="text" name="name" id="name" placeholder="Username" required>
+            <div class="password-container">
+                <input type="password" id="password" name="password" placeholder="Password" required>
+                <i id="toggle-icon" class="fas fa-eye password-toggle" onclick="togglePassword()"></i>
+            </div>
+            <div class="options-container">
+                <a href="forgottrainer.html">Forgot Password?</a>
+            </div>
+            <button type="submit">Login</button>
+        </form>
+    </div>
+</body>
+</html>

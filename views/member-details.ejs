@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Member Details</title>
+  <style>
+    body {
+      font-family: 'Roboto', Arial, sans-serif;
+      background-color: #f5f5f5;
+      color: #333333;
+      margin: 0;
+      padding: 20px;
+    }
+
+    h1 {
+      color: #000000;
+      margin-top: 0;
+    }
+
+    .menu-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .menu-bar .log {
+      background-color: #ffffff;
+      color: #333333;
+      padding: 5px 10px;
+      font-size: 14px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    .menu-bar .log:hover {
+      background-color: #cccccc;
+    }
+
+    .menu-bar .right-buttons {
+      display: flex;
+      align-items: center;
+    }
+
+    .menu-bar .right-buttons button {
+      margin-left: 10px;
+    }
+
+    .member-details {
+      background-color: #ffffff;
+      border-radius: 5px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+      animation: fade-in 0.5s ease-in-out forwards;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 20px;
+    }
+
+    table th,
+    table td {
+      padding: 10px;
+      text-align: left;
+    }
+
+    table th {
+      background-color: #808080;
+      color: #ffffff;
+      font-size: 16px;
+    }
+
+    table tr:nth-child(even) {
+      background-color: #f2f2f2;
+    }
+
+    table tr:hover {
+      background-color: #e0e0e0;
+    }
+
+    form label {
+      display: block;
+      margin-bottom: 5px;
+      color: #333333;
+    }
+
+    form input[type="text"] {
+      padding: 8px;
+      border: 1px solid #cccccc;
+      border-radius: 4px;
+      width: 100%;
+      margin-bottom: 10px;
+    }
+
+    form button[type="submit"] {
+      padding: 10px 20px;
+      font-size: 14px;
+      cursor: pointer;
+      background-color: #337ab7;
+      color: #ffffff;
+      border: none;
+      border-radius: 4px;
+    }
+
+    form button[type="submit"]:hover {
+      background-color: #135492;
+    }
+
+    .plan-selection {
+      margin-bottom: 20px;
+    }
+
+    .plan-selection p {
+      margin-top: 0;
+    }
+
+    .plan-selection button {
+      padding: 10px 20px;
+      font-size: 14px;
+      cursor: pointer;
+      background-color: #337ab7;
+      color: #ffffff;
+      border: none;
+      border-radius: 4px;
+      margin-right: 10px;
+    }
+
+    .plan-selection button.selected {
+      background-color: #135492;
+    }
+
+    #payment-amount {
+      margin-top: 20px;
+    }
+
+    #pay-button {
+      padding: 10px 20px;
+      font-size: 14px;
+      cursor: pointer;
+      background-color: #337ab7;
+      color: #ffffff;
+      border: none;
+      border-radius: 4px;
+      margin-top: 10px;
+    }
+
+    #pay-button:disabled {
+      background-color: #cccccc;
+      cursor: not-allowed;
+    }
+
+    h2 {
+      margin-top: 20px;
+    }
+
+    p {
+      margin: 0;
+      color: #333333;
+    }
+
+    @keyframes fade-in {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="member-details">
+    <div class="menu-bar">
+      <h1>Hi, <%= members[0].name %></h1>
+      <div class="right-buttons">
+        <button onclick="location.href='/logout'" type="button" class="log">Logout</button>
+        <button onclick="location.href='/forgotmember.html'" type="button" class="log">Change Password</button>
+        <button onclick="location.href='/single.html'" type="button" class="log">Login</button>
+      </div>
+    </div>
+
+    <table>
+      <tr>
+        <th>Weight</th>
+        <th>Height</th>
+        <th>Trainer</th>
+      </tr>
+      <tr>
+        <td><%= members[0].weight %></td>
+        <td><%= members[0].height %></td>
+        <td><%= members[0].trainer %></td>
+      </tr>
+    </table>
+
+    <form action="/member/update" method="POST">
+      <input type="hidden" name="_method" value="PUT">
+      <input type="hidden" name="id" value="<%= members[0].id %>">
+      <label for="height">Height:</label>
+      <input type="text" name="height" id="height" value="<%= members[0].height %>">
+      <label for="weight">Weight:</label>
+      <input type="text" name="weight" id="weight" value="<%= members[0].weight %>">
+      <button type="submit">Update</button>
+    </form>
+
+    <div class="plan-selection">
+      <p>Select a plan:</p>
+      <button id="gold-plan" onclick="selectPlan('gold')">MONTHLY - Rs599</button>
+      <button id="platinum-plan" onclick="selectPlan('platinum')">YEARLY - Rs5999</button>
+    </div>
+
+    <p id="payment-amount">Payment Amount: Rs0</p>
+    <button id="pay-button" onclick="makePayment()" disabled>Pay</button>
+
+    <h2>Training Plan</h2>
+    <p id="training-plan"></p>
+
+    <h2>Diet Plan</h2>
+    <p id="diet-plan"></p>
+
+  </div>
+  <script>
+    const paymentAmountElement = document.getElementById('payment-amount');
+    const payButton = document.getElementById('pay-button');
+
+    // Calculate the BMI using the updated height and weight values
+    const height = parseFloat(document.getElementById('height').value);
+    const weight = parseFloat(document.getElementById('weight').value);
+    const bmi = weight / ((height / 100) * (height / 100));
+
+    // Determine the BMI category
+    const bmiCategory = getBMICategory(bmi);
+
+    // Get the training and diet plans based on the BMI category
+    const trainingPlan = getTrainingPlan(bmiCategory);
+    const dietPlan = getDietPlan(bmiCategory);
+
+    // Display the training and diet plans
+    document.getElementById('training-plan').textContent = trainingPlan;
+    document.getElementById('diet-plan').textContent = dietPlan;
+
+    let selectedPlan = '';
+
+    function selectPlan(plan) {
+  // Remove the 'selected' class from all plan buttons
+  const planButtons = document.querySelectorAll('.plan-selection button');
+  planButtons.forEach(button => {
+    button.classList.remove('selected');
+  });
+
+  // Update the selected plan and apply the 'selected' class to the clicked button
+  selectedPlan = plan;
+  document.getElementById(`${plan}-plan`).classList.add('selected');
+
+  // Update the payment amount based on the selected plan
+  let paymentAmount = 0;
+  if (plan === 'gold') {
+    paymentAmount = 599;
+  } else if (plan === 'platinum') {
+    paymentAmount = 5999;
+  }
+
+  paymentAmountElement.textContent = `Payment Amount: Rs${paymentAmount}`;
+  payButton.disabled = false;
+}
+
+function makePayment() {
+  // Disable the pay button to prevent multiple clicks
+  payButton.disabled = true;
+
+  // Retrieve the necessary payment information
+  const memberId = '<%= members[0].id %>';
+  const selectedPlan = getSelectedPlan();
+
+  // Make an API request to get the Razorpay order details
+  fetch('/api/payments', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      memberId: memberId,
+      selectedPlan: selectedPlan,
+    }),
+  })
+    .then(response => response.json())
+    .then(data => {
+      // Initialize the Razorpay payment
+      const options = {
+        key: data.key,
+        amount: data.amount,
+        currency: data.currency,
+        name: 'GYMSHARK',
+        description: 'Membership Payment',
+        order_id: data.orderId,
+        handler: function (response) {
+          // Process the payment response
+          // ... perform necessary actions after successful payment ...
+          console.log(response);
+          alert('Payment successful!');
+        },
+        prefill: {
+          name: '<%= members[0].name %>', // Pre-fill the member's name
+          email: '<%= members[0].email %>', // Pre-fill the member's email address
+        },
+      };
+      const rzp = new Razorpay(options);
+      rzp.open();
+    })
+    .catch(error => {
+      console.error('Error processing payment:', error);
+      alert('Failed to process payment. Please try again later.');
+      payButton.disabled = false; // Re-enable the pay button if there was an error
+    });
+}
+
+    function getBMICategory(bmi) {
+      if (bmi < 18.5) {
+        return 'Underweight';
+      } else if (bmi >= 18.5 && bmi < 25) {
+        return 'Normal Weight';
+      } else if (bmi >= 25 && bmi < 30) {
+        return 'Overweight';
+      } else {
+        return 'Obese';
+      }
+    }
+
+    function getTrainingPlan(category) {
+      const trainingPlans = {
+        'Underweight': 'Focus on strength training and consume a calorie surplus to gain weight.',
+        'Normal Weight': 'Maintain a balanced exercise routine with a combination of cardiovascular and strength training exercises.',
+        'Overweight': 'Emphasize cardiovascular exercises to burn calories and include strength training for muscle development.',
+        'Obese': 'Start with low-impact exercises and gradually increase intensity. Combine cardiovascular and strength training exercises.',
+      };
+
+      return trainingPlans[category];
+    }
+
+    function getDietPlan(category) {
+      const dietPlans = {
+        'Underweight': 'Consume a calorie surplus with nutrient-rich foods such as lean proteins, whole grains, and healthy fats.',
+        'Normal Weight': 'Maintain a balanced diet with a variety of fruits, vegetables, lean proteins, whole grains, and healthy fats.',
+        'Overweight': 'Focus on portion control and include more fruits, vegetables, lean proteins, and whole grains. Limit processed foods and added sugars.',
+        'Obese': 'Follow a calorie-restricted diet with an emphasis on whole foods, including fruits, vegetables, lean proteins, and high-fiber foods.',
+      };
+
+      return dietPlans[category];
+    }
+
+    function getSelectedPlan() {
+      return selectedPlan;
+    }
+  </script>
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+</body>
+</html>

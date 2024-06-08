@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Trainer Dashboard</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f7f7f7;
+    }
+
+    /* Style for the menu bar */
+    .menu-bar {
+      position: absolute;
+      top: 0;
+      right: 0;
+      padding: 10px;
+    }
+  
+    /* Style for the logout button */
+    .menu-button {
+      background-color: #fff;
+      color: #000;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+  
+    .menu-button:hover {
+      background-color: #555;
+      color: #fff;
+    }
+  
+    /* Style for the trainer details table */
+    #trainerDetails table {
+      border-collapse: collapse;
+      width: 100%;
+      margin-bottom: 20px;
+    }
+  
+    #trainerDetails th,
+    #trainerDetails td {
+      padding: 10px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
+  
+    #trainerDetails th {
+      background-color: #f2f2f2;
+    }
+  
+    /* Style for the member details section */
+    #memberDetails {
+      margin-top: 20px;
+    }
+  
+    #memberDetails h2 {
+      margin-top: 0;
+      margin-bottom: 10px;
+      font-size: 24px;
+    }
+  
+    #memberDetails table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: center;
+    }
+  
+    #memberDetails th,
+    #memberDetails td {
+      padding: 12px;
+      border-bottom: 1px solid #ddd;
+    }
+  
+    #memberDetails th {
+      background-color: #f2f2f2;
+    }
+  
+    /* Hover effect on table rows */
+    #memberDetails tr:hover {
+      background-color: #f9f9f9;
+    }
+  
+    /* Styling for the table header text */
+    #memberDetails th {
+      font-weight: bold;
+      text-transform: uppercase;
+    }
+  
+  </style>
+</head>
+<body>
+  <div class="menu-bar">
+    <button class="menu-button" onclick="location.href='/logout'" type="button">Logout</button>
+    <button class="menu-button" onclick="location.href='/trainer/change-password'" type="button">Change Password</button>
+    <button onclick="location.href='/single.html'" type="button" class="menu-button">Login</button>
+  </div>
+  <% var trainer = trainers.find(function(tr) { return tr.id === signedInTrainerId; }); %>
+  <h1 style="text-align: center; color: #333;">Welcome <%= trainer.name %></h1>
+  <div id="trainerDetails">
+    <table>
+      <tr>
+        <th>Phone</th>
+        <th>Age</th>
+      </tr>
+      <tr>
+        <td><%= trainer.phone %></td>
+        <td><%= trainer.age %></td>
+      </tr>
+    </table>
+  </div>
+
+  <div id="memberDetails">
+    <h2>Member Details:</h2>
+    <table>
+      <tr>
+        <th>Name</th>
+        <th>Phone</th>
+        <th>Age</th>
+        <th>Height</th>
+        <th>Weight</th>
+      </tr>
+      <% members.forEach(function(member) { %>
+        <% if (trainer.assignedMembers.includes(member._id.toString())) { %>
+          <tr>
+            <td><%= member.name %></td>
+            <td><%= member.phone %></td>
+            <td><%= member.age %></td>
+            <td><%= member.height %></td>
+            <td><%= member.weight %></td>
+          </tr>
+        <% } %>
+      <% }); %>
+    </table>
+  </div>
+</body>
+</html>

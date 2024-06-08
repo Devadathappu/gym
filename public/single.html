@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Homepage</title>
+    <style>
+       body {
+            background-image: url(img/sign.jpg);
+            background-size: cover;
+            background-position: center;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        .icons-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 50px;
+        }
+
+        .icon {
+            cursor: pointer;
+            font-size: 48px;
+            color: #333;
+            border: 2px solid transparent;
+            border-radius: 20px;
+            background-color: rgba(255, 255, 255, 0.3);
+            padding: 10px;
+            transition: all 0.3s ease;
+            height: 180px;
+            width: 180px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: end;
+            background-size: cover;
+            background-position: center;
+        }
+        #c1{
+            background-image: url(/img/team-2.jpg);
+        }
+        #c2{
+            background-image: url(/img/trainer.jpg);
+        }
+        #c3{
+            background-image: url(/img/pexels-cesar-galeão-3289711.jpg);
+        }
+
+        .icon:hover {
+            color: #4CAF50;
+            border-color: #4CAF50;
+        }
+
+        .icon-text {
+            font-size: 18px;
+            font-weight: bold;
+            color:white;
+            margin-top: 10px;
+            text-align: center;
+        }
+        h1{
+            color: rgb(4, 9, 99);
+            border: 2px solid white;
+            border-radius: 5px;
+            padding: 10px;
+            background-color: rgba(255, 255, 255, 0.467);
+            font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>SIGN IN AS</h1>
+        <div class="icons-container">
+            <div class="icon" id="c1" onclick="goToAdmin()">
+                <i class="fas fa-user-shield"></i>
+                <div class="icon-text">ADMIN</div>
+            </div>
+            <div class="icon" id="c2" onclick="goToTrainer()">
+                <i class="fas fa-dumbbell"></i>
+                <div class="icon-text">TRAINER</div>
+            </div>
+            <div class="icon" id="c3" onclick="goToUser()">
+                <i class="fas fa-user"></i>
+                <div class="icon-text">MEMBER</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function goToAdmin() {
+            window.location.href = "ADMIN.html";
+        }
+
+        function goToTrainer() {
+            window.location.href = "TRAINER.html";
+        }
+
+        function goToUser() {
+            window.location.href = "USER.html";
+        }
+    </script>
+</body>
+</html>

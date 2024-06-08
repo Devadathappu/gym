@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Trainer Dashboard</title>
+</head>
+<body>
+  <h1>Welcome Trainer</h1>
+  <h2>Members Assigned to Trainer:</h2>
+  <select id="memberSelect" onchange="showMemberDetails()">
+    <option value="">Select a member</option>
+    <option value="1">John Doe</option>
+    <option value="2">Jane Smith</option>
+  </select>
+
+  <div id="trainerDetails">
+    <h2>Trainer Details:</h2>
+    <p>Name: Trainer</p>
+    <p>Age: 30</p>
+  </div>
+
+  <div id="memberDetails"></div>
+
+  <script>
+    function showMemberDetails() {
+      var memberId = document.getElementById("memberSelect").value;
+      var memberDetailsDiv = document.getElementById("memberDetails");
+      memberDetailsDiv.innerHTML = ""; // Clear previous details
+
+      // Simulated members data
+      var members = [
+        { _id: "1", name: "John Doe", age: 25 },
+        { _id: "2", name: "Jane Smith", age: 30 }
+      ];
+
+      // Find the selected member in the 'members' array
+      var selectedMember = members.find(function(member) {
+        return member._id === memberId;
+      });
+
+      // Display the selected member's details
+      if (selectedMember) {
+        memberDetailsDiv.innerHTML += "<h3>Member Details:</h3>";
+        memberDetailsDiv.innerHTML += "<p>Name: " + selectedMember.name + "</p>";
+        memberDetailsDiv.innerHTML += "<p>Age: " + selectedMember.age + "</p>";
+        // Add more member details as needed
+      }
+    }
+  </script>
+</body>
+</html>

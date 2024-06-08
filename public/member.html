@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Member Page</title>
+  <link rel="stylesheet" type="text/css" href="styles.css">
+</head>
+<body>
+  <h1>Welcome, <span id="memberName"></span>!</h1>
+
+  <h2>Trainer: <span id="trainerName"></span></h2>
+  <p>Email: <span id="trainerEmail"></span></p>
+  <p>Phone: <span id="trainerPhone"></span></p>
+
+  <h2>Member Details</h2>
+  <p>Weight: <span id="memberWeight"></span> kg</p>
+  <p>Height: <span id="memberHeight"></span> cm</p>
+
+  <h2>Attendance</h2>
+  <ul id="attendanceList"></ul>
+
+  <h2>Payment</h2>
+  <p>Amount Due: $<span id="paymentAmount"></span></p>
+  <button id="payButton">Pay Now</button>
+
+  <script>
+    window.addEventListener('DOMContentLoaded', () => {
+  const memberId = '...'; // Get the member ID from the URL or another source
+
+  fetch(`/member/${memberId}`)
+    .then((response) => response.json())
+    .then((data) => {
+      const member = data.member;
+      const trainer = member.trainer;
+
+      document.getElementById('memberName').textContent = member.name;
+      document.getElementById('trainerName').textContent = trainer.name;
+      document.getElementById('trainerEmail').textContent = trainer.email;
+      document.getElementById('trainerPhone').textContent = trainer.phone;
+      document.getElementById('memberWeight').textContent = member.weight;
+      document.getElementById('memberHeight').textContent = member.height;
+
+      const attendanceList = document.getElementById('attendanceList');
+      member.attendance.forEach((date) => {
+        const listItem = document.createElement('li');
+        listItem.textContent = date;
+        attendanceList.appendChild(listItem);
+      });
+
+      document.getElementById('paymentAmount').textContent = member.payment;
+
+      const payButton = document.getElementById('payButton');
+      payButton.addEventListener('click', () => {
+        // Implement the payment logic here
+      });
+    })
+    .catch((error) => {
+      console.log('Error fetching member data:', error);
+    });
+});
+
+  </script>
+</body>
+</html>

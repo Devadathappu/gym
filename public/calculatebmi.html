@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>BMI Calculator - GymShark</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <style>
+    body{
+      background-image: url(img/carousel-1.jpg);
+    }
+    body ,h2{
+      color: aliceblue;
+    }
+    .bmi-calculator{
+        margin-top: 90px;
+        margin-left: 505px;
+        margin-right: 505px;
+        background-color: transparent;
+    }
+   #bmi {
+      margin-top: 10px;
+    }
+    
+    #result {
+      font-weight: bolder;
+      margin-top: 10px;
+    }
+    
+    #diet-plan, #exercise-plan {
+      font-weight: bolder;
+      color: white;
+    }
+    #bmiResult{
+      background-color: rgba(250, 250, 250, 0.073);
+      padding: 20px;
+      border-radius: 10px;
+    }
+  </style>
+</head>
+<body>
+
+    <div class="bmi-calculator" action="/calculator">
+        <h2>BMI Calculator</h2>
+        <form id="bmiForm">
+          <div class="form-group">
+            <label for="weight">Weight (kg):</label>
+            <input type="number" class="form-control" id="weight" required>
+          </div>
+          <div class="form-group">
+            <label for="height">Height (cm):</label>
+            <input type="number" class="form-control" id="height" required>
+          </div>
+          <button type="submit" class="btn btn-primary">Calculate BMI</button>
+
+          </button>
+        </form>
+        <div id="bmiResult" class="mt-4" style="display: none;">
+          <h4>BMI Result:</h4>
+          <p id="bmiValue"></p>
+          <h4>Diet Plan:</h4>
+          <p id="dietPlan"></p>
+          <h4>Training Plan:</h4>
+          <p id="trainingPlan"></p>
+        </div>
+    </div>
+  <script>
+     $('#bmiForm').submit(function(e) {
+      e.preventDefault();
+      
+      var weight = parseFloat($('#weight').val());
+      var height = parseFloat($('#height').val());
+      var bmi = weight / ((height / 100) ** 2);
+      
+      // Display BMI result
+      $('#bmiValue').text('Your BMI: ' + bmi.toFixed(2));
+      $('#bmiResult').show();
+      
+      // Display diet and training plan based on BMI
+      if (bmi < 18.5) {
+        $('#dietPlan').text('Diet Plan: Eat a balanced diet and increase calorie intake.');
+        $('#trainingPlan').text('Training Plan: Focus on strength training to build muscle.');
+      } else if (bmi >= 18.5 && bmi < 25) {
+        $('#dietPlan').text('Diet Plan: Maintain a healthy balanced diet.');
+        $('#trainingPlan').text('Training Plan: Include both cardio and strength training exercises.');
+      } else if(bmi>25 && bmi<30){
+        $('#dietPlan').text('Diet Plan: Follow a calorie-controlled diet and reduce calorie intake.');
+        $('#trainingPlan').text('Training Plan: Emphasize on cardio exercises for weight loss.');
+      }
+      else{
+        $('#dietPlan').text('Diet Plan: Follow a calorie-controlled diet and reduce calorie intake.');
+        $('#trainingPlan').text('Training Plan: Emphasize on cardio exercises for weight loss.');
+      }
+    });
+  </script>
+</body>
+</html>

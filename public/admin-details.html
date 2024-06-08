@@ -1,0 +1,110 @@
+<!-- member-details.ejs -->
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Member Details</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f1f1f1;
+      margin: 0;
+      padding: 20px;
+    }
+
+    h1 {
+      color: #333;
+    }
+
+    .member-details {
+      background-color: #fff;
+      border-radius: 5px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+    }
+
+    .member-details p {
+      margin: 0;
+    }
+
+    .plan-selection {
+      margin-top: 20px;
+    }
+
+    .plan-selection button {
+      padding: 10px 20px;
+      margin-right: 10px;
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    .selected {
+      background-color: #337ab7;
+      color: #fff;
+    }
+  </style>
+</head>
+<body>
+  <div class="member-details">
+    <h1>Welcome, <%= member.name %>!</h1>
+    <p>Email: <%= member.email %></p>
+    <p>Weight: <%= member.weight %></p>
+    <p>Height: <%= member.height %></p>
+    <!-- Add more member details as needed -->
+
+    <div class="plan-selection">
+      <p>Select a plan:</p>
+      <button id="gold-plan" onclick="selectPlan('gold')">Gold - $600</button>
+      <button id="platinum-plan" onclick="selectPlan('platinum')">Platinum - $1000</button>
+      <button id="diamond-plan" onclick="selectPlan('diamond')">Diamond - $1500</button>
+    </div>
+
+    <p id="payment-amount">Payment Amount: $0</p>
+    <button id="pay-button" onclick="makePayment()" disabled>Pay</button>
+    <script>
+      const paymentAmountElement = document.getElementById('payment-amount');
+      let selectedPlan = '';
+
+      function selectPlan(plan) {
+        // Remove the 'selected' class from all plan buttons
+        const planButtons = document.querySelectorAll('.plan-selection button');
+        planButtons.forEach(button => {
+          button.classList.remove('selected');
+        });
+
+        // Update the selected plan and apply the 'selected' class to the clicked button
+        selectedPlan = plan;
+        document.getElementById(`${plan}-plan`).classList.add('selected');
+
+        // Update the payment amount based on the selected plan
+        let paymentAmount = 0;
+        if (plan === 'gold') {
+          paymentAmount = 600;
+        } else if (plan === 'platinum') {
+          paymentAmount = 1000;
+        } else if (plan === 'diamond') {
+          paymentAmount = 1500;
+        }
+
+        paymentAmountElement.textContent = `Payment Amount: $${paymentAmount}`;
+      }
+      function makePayment() {
+        // Here, you can implement the payment logic using your preferred payment gateway or API
+        // This is a placeholder function to demonstrate the button click action
+
+        // Disable the pay button to prevent multiple clicks
+
+        // Display a payment success message
+        alert(`Payment for ${selectedPlan} plan successful!`);
+
+        // Reset the plan selection
+        selectedPlan = '';
+        const planButtons = document.querySelectorAll('.plan-selection button');
+        planButtons.forEach(button => {
+          button.classList.remove('selected');
+        });
+        paymentAmountElement.textContent = 'Payment Amount: $0';
+      }
+    </script>
+  </div>
+</body>
+</html>
