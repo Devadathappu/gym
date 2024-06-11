@@ -1,10 +1,11 @@
 {
   "name": "gym",
   "version": "1.0.0",
-  "description": "GymShark",
-  "main": "app.js",
+  "description": "A gym website project",
+  "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node server.js",
+    "build": "echo 'No build step defined'" // Update this line with your actual build command
   },
   "author": "",
   "license": "ISC",
