@@ -9,7 +9,7 @@ This project is a web application designed to manage gym member and trainer deta
 - Assign trainers to members.
 - Update the validity of members.
 - Remove non-paying members and departing trainers.
-- Download details of members and trainers.
+- Download details of members and trainers in a Excel file.
 
 ### Trainer Features:
 - View assigned members.
