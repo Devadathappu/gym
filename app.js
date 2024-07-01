@@ -554,7 +554,7 @@ app.post('/extendexpiry', async (req, res) => {
     member.expiry = currentExpiry;
     await member.save();
 
-    res.send('expiry extended successfully'); // Redirect to the dashboard or any other desired location
+    res.send('expiry extended successfully');
   } catch (error) {
     console.error(error);
     res.status(500).send('Internal Server Error');
