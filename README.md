@@ -13,7 +13,9 @@ This project is a web application designed to manage gym member and trainer deta
 
 ### Trainer Features:
 - View assigned members.
+- Allow them to contact the assigned members.
 
 ### Member Features:
 - View trainer details.
 - Pay membership fees through the system.
+- Allow them to calculate their BMI and they can plan their workout accordingly discussing that with the trainer.
