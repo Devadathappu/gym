@@ -15,7 +15,6 @@ app.use(session({
   saveUninitialized: false
 }));
 
-// Create a new instance of the Razorpay client with your Razorpay API credentials
 const razorpay = new Razorpay({
   key_id: 'rzp_test_wSLj8hoqkdDWYq',
   key_secret: 'uWPzvBD4szgrx6PMmTB6cHw8',
